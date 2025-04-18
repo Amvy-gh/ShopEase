@@ -107,7 +107,7 @@ const sampleProducts = [
     name: "Smart Home Hub",
     description: "Central control system for connected home devices with voice assistant",
     price: 129.99,
-    image: "https://unsplash.com/s/photos/smart-home",
+    image: "https://media.istockphoto.com/id/1377702352/photo/tablet-with-smart-home-app-on-home-desk-concept-of-home-automatization-conrol-app-with.webp?a=1&b=1&s=612x612&w=0&k=20&c=imBxlYl0zydtzrXdiLgDcSCTJIK4Su7uDLo_1XdJvYM=",
     discount: 0,
     rating: 4,
     stock: 7,
