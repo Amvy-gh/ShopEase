@@ -3,6 +3,8 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import ProductList from "./components/ProductList";
 import ShoppingCart from "./components/ShoppingCart";
+import Checkout from "./components/Checkout";
+import Payment from "./components/Payment";
 
 // Sample product data with real dummy images
 const sampleProducts = [
@@ -11,7 +13,7 @@ const sampleProducts = [
     name: "Wireless Headphones",
     description: "Premium noise-cancelling wireless headphones with 30-hour battery life",
     price: 149.99,
-    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZHVjdHxlbnwwfHwwfHx8MA%3D%3D",
+    image: "/api/placeholder/400/400",
     discount: 15,
     rating: 4,
     stock: 23,
@@ -23,7 +25,7 @@ const sampleProducts = [
     name: "Smart Watch",
     description: "Advanced fitness tracker with heart rate monitoring and sleep analysis",
     price: 199.99,
-    image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZHVjdHxlbnwwfHwwfHx8MA%3D%3D",
+    image: "/api/placeholder/400/400",
     discount: 0,
     rating: 5,
     stock: 12,
@@ -35,7 +37,7 @@ const sampleProducts = [
     name: "Premium Coffee Maker",
     description: "Programmable coffee machine with built-in grinder and milk frother",
     price: 129.99,
-    image: "https://images.unsplash.com/photo-1525904097878-94fb15835963?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGNvZmZlZSUyMG1ha2VyfGVufDB8fDB8fHww",
+    image: "/api/placeholder/400/400",
     discount: 10,
     rating: 4,
     stock: 8,
@@ -47,7 +49,7 @@ const sampleProducts = [
     name: "Leather Wallet",
     description: "Handcrafted genuine leather wallet with RFID protection",
     price: 59.95,
-    image: "https://images.unsplash.com/photo-1627123424574-724758594e93?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8d2FsbGV0fGVufDB8fDB8fHww",
+    image: "/api/placeholder/400/400",
     discount: 0,
     rating: 5,
     stock: 32,
@@ -59,7 +61,7 @@ const sampleProducts = [
     name: "Wireless Charging Pad",
     description: "Fast-charging wireless pad compatible with all Qi-enabled devices",
     price: 39.99,
-    image: "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2hhcmdlcnxlbnwwfHwwfHx8MA%3D%3D",
+    image: "/api/placeholder/400/400",
     discount: 20,
     rating: 3,
     stock: 5,
@@ -71,7 +73,7 @@ const sampleProducts = [
     name: "Portable Bluetooth Speaker",
     description: "Waterproof portable speaker with 24-hour playtime and deep bass",
     price: 89.99,
-    image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Ymx1ZXRvb3RoJTIwc3BlYWtlcnxlbnwwfHwwfHx8MA%3D%3D",
+    image: "/api/placeholder/400/400",
     discount: 0,
     rating: 4,
     stock: 17,
@@ -83,7 +85,7 @@ const sampleProducts = [
     name: "Stainless Steel Water Bottle",
     description: "Vacuum insulated bottle that keeps drinks hot for 12 hours or cold for 24 hours",
     price: 34.95,
-    image: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8d2F0ZXIlMjBib3R0bGV8ZW58MHx8MHx8fDA%3D",
+    image: "/api/placeholder/400/400",
     discount: 0,
     rating: 5,
     stock: 41,
@@ -95,7 +97,7 @@ const sampleProducts = [
     name: "Backpack",
     description: "Water-resistant backpack with laptop compartment and USB charging port",
     price: 79.99,
-    image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YmFja3BhY2t8ZW58MHx8MHx8fDA%3D",
+    image: "/api/placeholder/400/400",
     discount: 25,
     rating: 4,
     stock: 0,
@@ -107,7 +109,7 @@ const sampleProducts = [
     name: "Smart Home Hub",
     description: "Central control system for connected home devices with voice assistant",
     price: 129.99,
-    image: "https://media.istockphoto.com/id/1377702352/photo/tablet-with-smart-home-app-on-home-desk-concept-of-home-automatization-conrol-app-with.webp?a=1&b=1&s=612x612&w=0&k=20&c=imBxlYl0zydtzrXdiLgDcSCTJIK4Su7uDLo_1XdJvYM=",
+    image: "/api/placeholder/400/400",
     discount: 0,
     rating: 4,
     stock: 7,
@@ -121,6 +123,9 @@ function App() {
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState("All");
+  const [appView, setAppView] = useState("shop"); // "shop", "checkout", "payment", "orderComplete"
+  const [checkoutData, setCheckoutData] = useState(null);
+  const [orderData, setOrderData] = useState(null);
 
   const categories = ["All", ...new Set(products.map(product => product.category))];
   
@@ -159,10 +164,45 @@ function App() {
     ));
   };
   
+  const calculateSubtotal = () => {
+    return cart.reduce((total, item) => {
+      const itemPrice = item.discount ? 
+        item.price - (item.price * item.discount / 100) : 
+        item.price;
+      return total + (itemPrice * item.quantity);
+    }, 0);
+  };
+
   const cartItemCount = cart.reduce((total, item) => total + item.quantity, 0);
   
   const toggleCart = () => {
     setIsCartOpen(!isCartOpen);
+  };
+
+  const handleCheckoutClick = () => {
+    setIsCartOpen(false);
+    setAppView("checkout");
+  };
+
+  const handleBackToShop = () => {
+    setAppView("shop");
+  };
+
+  const handleProceedToPayment = (checkoutInfo) => {
+    setCheckoutData({
+      ...checkoutInfo,
+      subtotal: calculateSubtotal(),
+      discount: 0,
+      tax: (calculateSubtotal() * 0.1).toFixed(2) // Example: 10% tax
+    });
+    setAppView("payment");
+  };
+
+  const handlePaymentComplete = (orderInfo) => {
+    setOrderData(orderInfo);
+    setAppView("orderComplete");
+    // Clear cart after successful order
+    setCart([]);
   };
 
   return (
@@ -170,73 +210,149 @@ function App() {
       <Header cartCount={cartItemCount} onCartClick={toggleCart} />
       
       <main className="flex-grow container mx-auto px-4 py-8">
-        {/* Hero section */}
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl p-8 mb-8">
-          <div className="max-w-2xl">
-            <h1 className="text-3xl md:text-4xl font-bold mb-4">Special Summer Sale</h1>
-            <p className="text-blue-100 mb-6">Get up to 40% off on selected items. Limited time offer!</p>
-            <button className="bg-white text-blue-600 px-6 py-2 rounded-lg font-medium hover:bg-blue-50 transition-colors">
-              Shop Now
-            </button>
-          </div>
-        </div>
-        
-        {/* Category filter */}
-        <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">Browse Categories</h2>
-          <div className="flex flex-wrap gap-2">
-            {categories.map(category => (
+        {appView === "shop" && (
+          <>
+            {/* Hero section */}
+            <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl p-8 mb-8">
+              <div className="max-w-2xl">
+                <h1 className="text-3xl md:text-4xl font-bold mb-4">Special Summer Sale</h1>
+                <p className="text-blue-100 mb-6">Get up to 40% off on selected items. Limited time offer!</p>
+                <button className="bg-white text-blue-600 px-6 py-2 rounded-lg font-medium hover:bg-blue-50 transition-colors">
+                  Shop Now
+                </button>
+              </div>
+            </div>
+            
+            {/* Category filter */}
+            <div className="mb-8">
+              <h2 className="text-xl font-semibold mb-4">Browse Categories</h2>
+              <div className="flex flex-wrap gap-2">
+                {categories.map(category => (
+                  <button
+                    key={category}
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                      activeCategory === category 
+                        ? 'bg-blue-600 text-white' 
+                        : 'bg-white text-gray-700 hover:bg-gray-100'
+                    }`}
+                    onClick={() => setActiveCategory(category)}
+                  >
+                    {category}
+                  </button>
+                ))}
+              </div>
+            </div>
+            
+            {/* Section title */}
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-bold text-gray-800">
+                {activeCategory === "All" ? "Featured Products" : activeCategory}
+              </h2>
+              <div className="text-sm text-gray-500">
+                Showing {filteredProducts.length} products
+              </div>
+            </div>
+            
+            {/* Product grid */}
+            <ProductList products={filteredProducts} onAddToCart={addToCart} />
+          </>
+        )}
+
+        {appView === "checkout" && (
+          <Checkout 
+            cartItems={cart} 
+            subtotal={calculateSubtotal()} 
+            onBack={handleBackToShop}
+            onProceed={handleProceedToPayment}
+          />
+        )}
+
+        {appView === "payment" && (
+          <Payment 
+            checkoutData={checkoutData}
+            cartItems={cart}
+            onBack={() => setAppView("checkout")}
+            onComplete={handlePaymentComplete}
+          />
+        )}
+
+        {appView === "orderComplete" && (
+          <div className="max-w-2xl mx-auto text-center py-12">
+            <div className="bg-white rounded-lg shadow-lg p-8">
+              <div className="mb-6">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
+                  <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <h2 className="text-2xl font-bold text-gray-800 mb-2">Thank You For Your Order!</h2>
+                <p className="text-gray-600">Your order has been received and is being processed.</p>
+              </div>
+              
+              <div className="mb-6 text-left border-t border-b border-gray-200 py-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-sm text-gray-600 mb-1">Order Number</p>
+                    <p className="font-medium">{orderData?.orderNumber}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600 mb-1">Date</p>
+                    <p className="font-medium">
+                      {orderData?.date && new Date(orderData.date).toLocaleDateString()}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600 mb-1">Total Amount</p>
+                    <p className="font-medium">${orderData?.totalAmount.toFixed(2)}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600 mb-1">Payment Method</p>
+                    <p className="font-medium capitalize">
+                      {orderData?.paymentInfo.method.replace('-', ' ')}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
               <button
-                key={category}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                  activeCategory === category 
-                    ? 'bg-blue-600 text-white' 
-                    : 'bg-white text-gray-700 hover:bg-gray-100'
-                }`}
-                onClick={() => setActiveCategory(category)}
+                onClick={handleBackToShop}
+                className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors"
               >
-                {category}
+                Continue Shopping
               </button>
-            ))}
+            </div>
           </div>
-        </div>
-        
-        {/* Section title */}
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-gray-800">
-            {activeCategory === "All" ? "Featured Products" : activeCategory}
-          </h2>
-          <div className="text-sm text-gray-500">
-            Showing {filteredProducts.length} products
-          </div>
-        </div>
-        
-        {/* Product grid */}
-        <ProductList products={filteredProducts} onAddToCart={addToCart} />
+        )}
         
         {/* Shopping cart slide-in */}
-        <ShoppingCart 
-          isOpen={isCartOpen}
-          onClose={() => setIsCartOpen(false)}
-          cartItems={cart}
-          onUpdateQuantity={updateQuantity}
-          onRemoveItem={removeFromCart}
-        />
+        {appView === "shop" && (
+          <ShoppingCart 
+            isOpen={isCartOpen}
+            onClose={() => setIsCartOpen(false)}
+            cartItems={cart}
+            onUpdateQuantity={updateQuantity}
+            onRemoveItem={removeFromCart}
+            onCheckout={handleCheckoutClick}
+            subtotal={calculateSubtotal()}
+          />
+        )}
         
         {/* Floating cart button (mobile) */}
-        <button
-          className="fixed bottom-4 right-4 bg-blue-600 text-white rounded-full p-3 shadow-lg md:hidden"
-          onClick={toggleCart}
-        >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-          </svg>
-          {cartItemCount > 0 && (
-            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-              {cartItemCount}
-            </span>
-          )}
-        </button>
+        {appView === "shop" && (
+          <button
+            className="fixed bottom-4 right-4 bg-blue-600 text-white rounded-full p-3 shadow-lg md:hidden"
+            onClick={toggleCart}
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            {cartItemCount > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                {cartItemCount}
+              </span>
+            )}
+          </button>
+        )}
       </main>
       
       <Footer />

@@ -1,13 +1,6 @@
 import React from 'react';
 
-function ShoppingCart({ isOpen, onClose, cartItems, onUpdateQuantity, onRemoveItem }) {
-  const totalPrice = cartItems.reduce(
-    (sum, item) => sum + (item.discount ? 
-      (item.price - (item.price * item.discount / 100)) * item.quantity : 
-      item.price * item.quantity), 
-    0
-  ).toFixed(2);
-
+function ShoppingCart({ isOpen, onClose, cartItems, onUpdateQuantity, onRemoveItem, onCheckout, subtotal }) {
   return (
     <div className={`fixed inset-y-0 right-0 max-w-sm w-full bg-white shadow-xl transform transition-transform duration-300 ease-in-out z-50 ${
       isOpen ? 'translate-x-0' : 'translate-x-full'
@@ -15,7 +8,7 @@ function ShoppingCart({ isOpen, onClose, cartItems, onUpdateQuantity, onRemoveIt
       <div className="flex flex-col h-full">
         {/* Header */}
         <div className="px-4 py-3 border-b flex items-center justify-between">
-          <h3 className="text-lg font-medium">Your Cart ({cartItems.length})</h3>
+          <h3 className="text-lg font-medium">Your Cart ({cartItems.reduce((total, item) => total + item.quantity, 0)})</h3>
           <button 
             onClick={onClose}
             className="p-1 rounded-full hover:bg-gray-100"
@@ -109,13 +102,17 @@ function ShoppingCart({ isOpen, onClose, cartItems, onUpdateQuantity, onRemoveIt
         <div className="border-t p-4">
           <div className="flex justify-between mb-3">
             <span className="text-gray-600">Subtotal</span>
-            <span className="font-medium">${totalPrice}</span>
+            <span className="font-medium">${subtotal.toFixed(2)}</span>
           </div>
           <div className="flex justify-between mb-4">
             <span className="text-gray-600">Shipping</span>
             <span className="font-medium">Calculated at checkout</span>
           </div>
-          <button className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors">
+          <button 
+            onClick={onCheckout}
+            className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors"
+            disabled={cartItems.length === 0}
+          >
             Proceed to Checkout
           </button>
           <button 
