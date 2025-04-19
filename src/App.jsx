@@ -5,137 +5,27 @@ import ProductList from "./components/ProductList";
 import ShoppingCart from "./components/ShoppingCart";
 import Checkout from "./components/Checkout";
 import Payment from "./components/Payment";
+import SampleProducts from "./data/SampleProducts";
 
-// Sample product data with real dummy images
-const sampleProducts = [
-  {
-    id: 1,
-    name: "Wireless Headphones",
-    description: "Premium noise-cancelling wireless headphones with 30-hour battery life",
-    price: 149.99,
-    image: "/api/placeholder/400/400",
-    discount: 15,
-    rating: 4,
-    stock: 23,
-    isNew: true,
-    category: "Electronics"
-  },
-  {
-    id: 2,
-    name: "Smart Watch",
-    description: "Advanced fitness tracker with heart rate monitoring and sleep analysis",
-    price: 199.99,
-    image: "/api/placeholder/400/400",
-    discount: 0,
-    rating: 5,
-    stock: 12,
-    isNew: true,
-    category: "Electronics"
-  },
-  {
-    id: 3,
-    name: "Premium Coffee Maker",
-    description: "Programmable coffee machine with built-in grinder and milk frother",
-    price: 129.99,
-    image: "/api/placeholder/400/400",
-    discount: 10,
-    rating: 4,
-    stock: 8,
-    isNew: false,
-    category: "Kitchen"
-  },
-  {
-    id: 4,
-    name: "Leather Wallet",
-    description: "Handcrafted genuine leather wallet with RFID protection",
-    price: 59.95,
-    image: "/api/placeholder/400/400",
-    discount: 0,
-    rating: 5,
-    stock: 32,
-    isNew: false,
-    category: "Accessories"
-  },
-  {
-    id: 5,
-    name: "Wireless Charging Pad",
-    description: "Fast-charging wireless pad compatible with all Qi-enabled devices",
-    price: 39.99,
-    image: "/api/placeholder/400/400",
-    discount: 20,
-    rating: 3,
-    stock: 5,
-    isNew: false,
-    category: "Electronics"
-  },
-  {
-    id: 6,
-    name: "Portable Bluetooth Speaker",
-    description: "Waterproof portable speaker with 24-hour playtime and deep bass",
-    price: 89.99,
-    image: "/api/placeholder/400/400",
-    discount: 0,
-    rating: 4,
-    stock: 17,
-    isNew: true,
-    category: "Electronics"
-  },
-  {
-    id: 7,
-    name: "Stainless Steel Water Bottle",
-    description: "Vacuum insulated bottle that keeps drinks hot for 12 hours or cold for 24 hours",
-    price: 34.95,
-    image: "/api/placeholder/400/400",
-    discount: 0,
-    rating: 5,
-    stock: 41,
-    isNew: false,
-    category: "Kitchen"
-  },
-  {
-    id: 8,
-    name: "Backpack",
-    description: "Water-resistant backpack with laptop compartment and USB charging port",
-    price: 79.99,
-    image: "/api/placeholder/400/400",
-    discount: 25,
-    rating: 4,
-    stock: 0,
-    isNew: false,
-    category: "Accessories"
-  },
-  {
-    id: 9,
-    name: "Smart Home Hub",
-    description: "Central control system for connected home devices with voice assistant",
-    price: 129.99,
-    image: "/api/placeholder/400/400",
-    discount: 0,
-    rating: 4,
-    stock: 7,
-    isNew: true,
-    category: "Electronics"
-  }
-];
 
 function App() {
-  const [products] = useState(sampleProducts);
+  const [products] = useState(SampleProducts);
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState("All");
-  const [appView, setAppView] = useState("shop"); // "shop", "checkout", "payment", "orderComplete"
+  const [appView, setAppView] = useState("shop");
   const [checkoutData, setCheckoutData] = useState(null);
   const [orderData, setOrderData] = useState(null);
 
   const categories = ["All", ...new Set(products.map(product => product.category))];
-  
+
   const filteredProducts = activeCategory === "All" 
     ? products 
     : products.filter(product => product.category === activeCategory);
 
   const addToCart = (product) => {
     const existingItem = cart.find(item => item.id === product.id);
-    
+
     if (existingItem) {
       setCart(cart.map(item => 
         item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
@@ -143,27 +33,26 @@ function App() {
     } else {
       setCart([...cart, { ...product, quantity: 1 }]);
     }
-    
-    // Show cart briefly when item is added
+
     setIsCartOpen(true);
     setTimeout(() => setIsCartOpen(false), 3000);
   };
-  
+
   const removeFromCart = (productId) => {
     setCart(cart.filter(item => item.id !== productId));
   };
-  
+
   const updateQuantity = (productId, newQuantity) => {
     if (newQuantity <= 0) {
       removeFromCart(productId);
       return;
     }
-    
+
     setCart(cart.map(item => 
       item.id === productId ? { ...item, quantity: newQuantity } : item
     ));
   };
-  
+
   const calculateSubtotal = () => {
     return cart.reduce((total, item) => {
       const itemPrice = item.discount ? 
@@ -174,7 +63,7 @@ function App() {
   };
 
   const cartItemCount = cart.reduce((total, item) => total + item.quantity, 0);
-  
+
   const toggleCart = () => {
     setIsCartOpen(!isCartOpen);
   };
@@ -193,7 +82,7 @@ function App() {
       ...checkoutInfo,
       subtotal: calculateSubtotal(),
       discount: 0,
-      tax: (calculateSubtotal() * 0.1).toFixed(2) // Example: 10% tax
+      tax: (calculateSubtotal() * 0.1).toFixed(2)
     });
     setAppView("payment");
   };
@@ -201,18 +90,16 @@ function App() {
   const handlePaymentComplete = (orderInfo) => {
     setOrderData(orderInfo);
     setAppView("orderComplete");
-    // Clear cart after successful order
     setCart([]);
   };
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Header cartCount={cartItemCount} onCartClick={toggleCart} />
-      
+
       <main className="flex-grow container mx-auto px-4 py-8">
         {appView === "shop" && (
           <>
-            {/* Hero section */}
             <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl p-8 mb-8">
               <div className="max-w-2xl">
                 <h1 className="text-3xl md:text-4xl font-bold mb-4">Special Summer Sale</h1>
@@ -222,8 +109,7 @@ function App() {
                 </button>
               </div>
             </div>
-            
-            {/* Category filter */}
+
             <div className="mb-8">
               <h2 className="text-xl font-semibold mb-4">Browse Categories</h2>
               <div className="flex flex-wrap gap-2">
@@ -242,8 +128,7 @@ function App() {
                 ))}
               </div>
             </div>
-            
-            {/* Section title */}
+
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-bold text-gray-800">
                 {activeCategory === "All" ? "Featured Products" : activeCategory}
@@ -252,8 +137,7 @@ function App() {
                 Showing {filteredProducts.length} products
               </div>
             </div>
-            
-            {/* Product grid */}
+
             <ProductList products={filteredProducts} onAddToCart={addToCart} />
           </>
         )}
@@ -288,7 +172,7 @@ function App() {
                 <h2 className="text-2xl font-bold text-gray-800 mb-2">Thank You For Your Order!</h2>
                 <p className="text-gray-600">Your order has been received and is being processed.</p>
               </div>
-              
+
               <div className="mb-6 text-left border-t border-b border-gray-200 py-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
@@ -313,7 +197,7 @@ function App() {
                   </div>
                 </div>
               </div>
-              
+
               <button
                 onClick={handleBackToShop}
                 className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors"
@@ -323,8 +207,7 @@ function App() {
             </div>
           </div>
         )}
-        
-        {/* Shopping cart slide-in */}
+
         {appView === "shop" && (
           <ShoppingCart 
             isOpen={isCartOpen}
@@ -336,8 +219,7 @@ function App() {
             subtotal={calculateSubtotal()}
           />
         )}
-        
-        {/* Floating cart button (mobile) */}
+
         {appView === "shop" && (
           <button
             className="fixed bottom-4 right-4 bg-blue-600 text-white rounded-full p-3 shadow-lg md:hidden"
@@ -354,7 +236,7 @@ function App() {
           </button>
         )}
       </main>
-      
+
       <Footer />
     </div>
   );
