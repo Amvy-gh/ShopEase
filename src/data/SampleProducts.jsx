@@ -202,6 +202,30 @@ const SampleProducts = [
       stock: 36,
       isNew: false,
       category: "Accessories"
+    },
+    {
+      id: 18,
+      name: "Gaming Mouse",
+      description: "Ergonomic RGB gaming mouse with 6 programmable buttons and adjustable DPI",
+      price: 49.99,
+      image: "https://images.pexels.com/photos/1486294/pexels-photo-1486294.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+      discount: 10,
+      rating: 4,
+      stock: 25,
+      isNew: true,
+      category: "Electronics"
+    },
+    {
+      id: 19,
+      name: "Standing Desk Converter",
+      description: "Adjustable standing desk converter for ergonomic work setup",
+      price: 159.99,
+      image: "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQ9WsFtR_rYsIHcHRfp2EzxoQT6wZtxGif3WzBzVHipsxiSfWcPejIljbIKeWWh83qfg-_d8BkFCoXAjXVi4wu9qg6-U2TjWGgmwnui0Eu-GsheHvDM15_e",
+      discount: 5,
+      rating: 5,
+      stock: 11,
+      isNew: false,
+      category: "Home"
     }
   ];
 
