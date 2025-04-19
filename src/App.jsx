@@ -8,17 +8,31 @@ import Payment from "./components/Payment";
 import OrderComplete from "./components/OrderComplete";
 import SpecialSaleBanner from "./components/SpecialSaleBanner";
 import CategoryFilter from "./components/CategoryFilter";
+import UserProfile from "./components/UserProfile"; // Import the new UserProfile component
 import SampleProducts from "./data/SampleProducts";
 
 function App() {
   const [products] = useState(SampleProducts);
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false); // State for profile drawer
   const [activeCategory, setActiveCategory] = useState("All");
   const [appView, setAppView] = useState("shop");
   const [checkoutData, setCheckoutData] = useState(null);
   const [orderData, setOrderData] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
+  // Basic user data state - in a real app, this would come from authentication
+  const [userData, setUserData] = useState({
+    name: "John Doe",
+    email: "john.doe@example.com",
+    phone: "+1 (555) 123-4567",
+    address: "123 Main St, Anytown, USA",
+    isLoggedIn: true, // Track login state
+    orders: [
+      { id: 'ORD-001', date: '2025-04-15', status: 'Delivered', total: 125.99 },
+      { id: 'ORD-002', date: '2025-03-22', status: 'Processing', total: 79.50 },
+    ]
+  });
 
   const categories = ["All", ...new Set(products.map(product => product.category))];
 
@@ -72,6 +86,37 @@ function App() {
 
   const toggleCart = () => {
     setIsCartOpen(!isCartOpen);
+    // Close profile if opening cart
+    if (!isCartOpen) setIsProfileOpen(false);
+  };
+
+  // Toggle profile panel
+  const toggleProfile = () => {
+    setIsProfileOpen(!isProfileOpen);
+    // Close cart if opening profile
+    if (!isProfileOpen) setIsCartOpen(false);
+  };
+
+  // Handle user logout
+  const handleLogout = () => {
+    setUserData({
+      name: "Guest User",
+      email: "",
+      phone: "",
+      address: "",
+      isLoggedIn: false,
+      orders: []
+    });
+    setIsProfileOpen(false);
+    // In a real app, you would also clear any auth tokens/cookies here
+  };
+
+  // Handle user data updates
+  const updateUserData = (newData) => {
+    setUserData({
+      ...userData,
+      ...newData
+    });
   };
 
   const handleCheckoutClick = () => {
@@ -96,6 +141,21 @@ function App() {
   };
 
   const handlePaymentComplete = (orderInfo) => {
+    // Add the new order to user's order history if logged in
+    if (userData.isLoggedIn) {
+      const newOrder = {
+        id: `ORD-${Math.floor(1000 + Math.random() * 9000)}`,
+        date: new Date().toISOString().split('T')[0],
+        status: 'Processing',
+        total: calculateSubtotal() + parseFloat((calculateSubtotal() * 0.1).toFixed(2))
+      };
+      
+      setUserData({
+        ...userData,
+        orders: [newOrder, ...userData.orders]
+      });
+    }
+    
     setOrderData(orderInfo);
     setAppView("orderComplete");
     setCart([]);
@@ -110,9 +170,12 @@ function App() {
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Header 
         cartCount={cartItemCount} 
-        onCartClick={toggleCart} 
+        onCartClick={toggleCart}
+        onProfileClick={toggleProfile} 
         searchQuery={searchQuery}
         onSearchChange={handleSearchChange}
+        isLoggedIn={userData.isLoggedIn}
+        userName={userData.name}
       />
 
       <main className="flex-grow container mx-auto px-4 py-8">
@@ -153,6 +216,7 @@ function App() {
             subtotal={calculateSubtotal()} 
             onBack={handleBackToShop}
             onProceed={handleProceedToPayment}
+            userData={userData} // Pass user data for auto-filling
           />
         )}
 
@@ -178,6 +242,16 @@ function App() {
             onRemoveItem={removeFromCart}
             onCheckout={handleCheckoutClick}
             subtotal={calculateSubtotal()}
+          />
+        )}
+
+        {/* Profile Component */}
+        {isProfileOpen && (
+          <UserProfile 
+            onClose={() => setIsProfileOpen(false)}
+            userData={userData}
+            onLogout={handleLogout}
+            onUpdateUserData={updateUserData}
           />
         )}
 

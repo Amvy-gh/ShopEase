@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Header({ cartCount, onCartClick, searchQuery, onSearchChange }) {
+function Header({ cartCount, onCartClick, onProfileClick, searchQuery, onSearchChange, isLoggedIn, userName }) {
   const [menuOpen, setMenuOpen] = React.useState(false);
 
   const handleCartClick = () => {
@@ -10,7 +10,9 @@ function Header({ cartCount, onCartClick, searchQuery, onSearchChange }) {
   };
 
   const handleUserClick = () => {
-    alert("Fitur profil belum terimplementasi");
+    if (onProfileClick) {
+      onProfileClick();
+    }
   };
 
   const handleSearchInput = (e) => {
@@ -76,79 +78,49 @@ function Header({ cartCount, onCartClick, searchQuery, onSearchChange }) {
             </nav>
 
             <div className="flex items-center space-x-3">
+              {/* Profile Button */}
               <button
-                className="text-gray-600 hover:text-blue-600 transition-colors"
+                className="text-gray-600 hover:text-blue-600 transition-colors group relative"
                 onClick={handleUserClick}
               >
-                {/* Profile Icon */}
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
+                {isLoggedIn ? (
+                  <div className="relative">
+                    <div className="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center">
+                      {userName?.charAt(0).toUpperCase() || 'G'}
+                    </div>
+                    <span className="hidden group-hover:block absolute -bottom-6 -left-8 w-24 text-xs bg-gray-800 text-white py-1 px-2 rounded text-center">
+                      My Profile
+                    </span>
+                  </div>
+                ) : (
+                  <div className="relative">
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                    <span className="hidden group-hover:block absolute -bottom-6 -left-8 w-24 text-xs bg-gray-800 text-white py-1 px-2 rounded text-center">
+                      Sign In
+                    </span>
+                  </div>
+                )}
               </button>
 
+              {/* Cart Button */}
               <button
-                className="text-gray-600 hover:text-blue-600 transition-colors relative"
+                className="text-gray-600 hover:text-blue-600 transition-colors relative group"
                 onClick={handleCartClick}
               >
-                {/* Cart Icon */}
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M17 13a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
                 {cartCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5">
                     {cartCount}
                   </span>
                 )}
               </button>
-
-              <button
-                className="md:hidden text-gray-600"
-                onClick={() => setMenuOpen(!menuOpen)}
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              </button>
             </div>
           </div>
         </div>
-
-        {/* Mobile menu */}
-        {menuOpen && (
-          <div className="md:hidden mt-3 pb-3">
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search products..."
-                className="w-full pl-10 pr-10 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-3"
-                value={searchQuery}
-                onChange={handleSearchInput}
-              />
-              <div className="absolute left-3 top-2.5 text-gray-400">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </div>
-              {searchQuery && (
-                <button 
-                  className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600"
-                  onClick={clearSearch}
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              )}
-            </div>
-            <nav>
-              <ul className="flex flex-col space-y-3">
-                <li><a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">Home</a></li>
-                <li><a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">Categories</a></li>
-                <li><a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">Deals</a></li>
-              </ul>
-            </nav>
-          </div>
-        )}
       </div>
     </header>
   );
