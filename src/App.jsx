@@ -18,12 +18,19 @@ function App() {
   const [appView, setAppView] = useState("shop");
   const [checkoutData, setCheckoutData] = useState(null);
   const [orderData, setOrderData] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const categories = ["All", ...new Set(products.map(product => product.category))];
 
-  const filteredProducts = activeCategory === "All" 
-    ? products 
-    : products.filter(product => product.category === activeCategory);
+  // Filter products based on both category and search query
+  const filteredProducts = products.filter(product => {
+    const matchesCategory = activeCategory === "All" || product.category === activeCategory;
+    const matchesSearch = searchQuery === "" || 
+      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.description.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    return matchesCategory && matchesSearch;
+  });
 
   const addToCart = (product) => {
     const existingItem = cart.find(item => item.id === product.id);
@@ -74,6 +81,8 @@ function App() {
 
   const handleBackToShop = () => {
     setAppView("shop");
+    // Reset search when going back to shop
+    setSearchQuery("");
   };
 
   const handleProceedToPayment = (checkoutInfo) => {
@@ -92,24 +101,49 @@ function App() {
     setCart([]);
   };
 
+  // Handle search input changes
+  const handleSearchChange = (query) => {
+    setSearchQuery(query);
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
-      <Header cartCount={cartItemCount} onCartClick={toggleCart} />
+      <Header 
+        cartCount={cartItemCount} 
+        onCartClick={toggleCart} 
+        searchQuery={searchQuery}
+        onSearchChange={handleSearchChange}
+      />
 
       <main className="flex-grow container mx-auto px-4 py-8">
         {appView === "shop" && (
           <>
             <SpecialSaleBanner />
+            
             <CategoryFilter categories={categories} activeCategory={activeCategory} setActiveCategory={setActiveCategory} />
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-bold text-gray-800">
-                {activeCategory === "All" ? "Featured Products" : activeCategory}
+                {activeCategory === "All" ? 
+                  (searchQuery ? `Search: "${searchQuery}"` : "Featured Products") : 
+                  activeCategory}
               </h2>
               <div className="text-sm text-gray-500">
                 Showing {filteredProducts.length} products
               </div>
             </div>
-            <ProductList products={filteredProducts} onAddToCart={addToCart} />
+            {filteredProducts.length > 0 ? (
+              <ProductList products={filteredProducts} onAddToCart={addToCart} />
+            ) : (
+              <div className="text-center py-12">
+                <p className="text-gray-500 text-lg">No products found matching your search.</p>
+                <button 
+                  onClick={() => handleSearchChange("")}
+                  className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                >
+                  Clear Search
+                </button>
+              </div>
+            )}
           </>
         )}
 

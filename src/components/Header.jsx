@@ -1,11 +1,9 @@
 import React from 'react';
 
-function Header({ cartCount, onCartClick }) {
+function Header({ cartCount, onCartClick, searchQuery, onSearchChange }) {
   const [menuOpen, setMenuOpen] = React.useState(false);
 
-  // Fungsi untuk menangani saat tombol cart diklik
   const handleCartClick = () => {
-    // Panggil fungsi onCartClick yang dikirim dari App.jsx
     if (onCartClick) {
       onCartClick();
     }
@@ -13,6 +11,18 @@ function Header({ cartCount, onCartClick }) {
 
   const handleUserClick = () => {
     alert("Fitur profil belum terimplementasi");
+  };
+
+  const handleSearchInput = (e) => {
+    if (onSearchChange) {
+      onSearchChange(e.target.value);
+    }
+  };
+
+  const clearSearch = () => {
+    if (onSearchChange) {
+      onSearchChange("");
+    }
   };
 
   return (
@@ -33,13 +43,25 @@ function Header({ cartCount, onCartClick }) {
               <input
                 type="text"
                 placeholder="Search products..."
-                className="w-full pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full pl-10 pr-10 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                value={searchQuery}
+                onChange={handleSearchInput}
               />
               <div className="absolute left-3 top-2.5 text-gray-400">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </div>
+              {searchQuery && (
+                <button 
+                  className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600"
+                  onClick={clearSearch}
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              )}
             </div>
           </div>
 
@@ -94,11 +116,30 @@ function Header({ cartCount, onCartClick }) {
         {/* Mobile menu */}
         {menuOpen && (
           <div className="md:hidden mt-3 pb-3">
-            <input
-              type="text"
-              placeholder="Search products..."
-              className="w-full pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-3"
-            />
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Search products..."
+                className="w-full pl-10 pr-10 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-3"
+                value={searchQuery}
+                onChange={handleSearchInput}
+              />
+              <div className="absolute left-3 top-2.5 text-gray-400">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+              {searchQuery && (
+                <button 
+                  className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600"
+                  onClick={clearSearch}
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              )}
+            </div>
             <nav>
               <ul className="flex flex-col space-y-3">
                 <li><a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">Home</a></li>
