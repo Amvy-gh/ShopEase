@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
+import Header from "./components/pages/Header";
+import Footer from "./components/pages/Footer";
 import ProductList from "./components/ProductList";
 import ShoppingCart from "./components/ShoppingCart";
 import Checkout from "./components/Checkout";
@@ -8,32 +8,21 @@ import Payment from "./components/Payment";
 import OrderComplete from "./components/OrderComplete";
 import SpecialSaleBanner from "./components/SpecialSaleBanner";
 import CategoryFilter from "./components/CategoryFilter";
-import UserProfile from "./components/UserProfile"; // Import the new UserProfile component
+import UserProfile from "./components/UserProfile";
 import SampleProducts from "./data/SampleProducts";
+import UseUserData from "./data/UserData";
 
 function App() {
   const [products] = useState(SampleProducts);
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [isProfileOpen, setIsProfileOpen] = useState(false); // State for profile drawer
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState("All");
   const [appView, setAppView] = useState("shop");
   const [checkoutData, setCheckoutData] = useState(null);
   const [orderData, setOrderData] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
-  // Basic user data state - in a real app, this would come from authentication
-  const [userData, setUserData] = useState({
-    name: "John Doe",
-    email: "john.doe@example.com",
-    phone: "+1 (555) 123-4567",
-    address: "123 Main St, Anytown, USA",
-    isLoggedIn: true, // Track login state
-    orders: [
-      { id: 'ORD-001', date: '2025-04-15', status: 'Delivered', total: 125.99 },
-      { id: 'ORD-002', date: '2025-03-22', status: 'Processing', total: 79.50 },
-    ]
-  });
-
+  const [userData, setUserData] = UseUserData();
   const categories = ["All", ...new Set(products.map(product => product.category))];
 
   // Filter products based on both category and search query
