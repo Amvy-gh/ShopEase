@@ -26,17 +26,17 @@ function Payment({ checkoutData, cartItems, onBack, onComplete }) {
     // Format card number with spaces every 4 digits
     if (name === 'cardNumber') {
       formattedValue = value
-        .replace(/\s/g, '') // Remove existing spaces
-        .replace(/(\d{4})/g, '$1 ') // Add space after every 4 digits
-        .trim(); // Remove trailing space
+        .replace(/\s/g, '')
+        .replace(/(\d{4})/g, '$1 ')
+        .trim();
     }
     
     // Format expiry date as MM/YY
     if (name === 'expiryDate') {
       formattedValue = value
-        .replace(/\D/g, '') // Remove non-digits
-        .replace(/^(\d{2})(\d)/, '$1/$2') // Format as MM/YY
-        .substring(0, 5); // Limit to 5 characters (MM/YY)
+        .replace(/\D/g, '')
+        .replace(/^(\d{2})(\d)/, '$1/$2')
+        .substring(0, 5);
     }
     
     setPaymentData({
@@ -71,7 +71,7 @@ function Payment({ checkoutData, cartItems, onBack, onComplete }) {
       } else {
         // Check if the expiry date is in the future
         const [month, year] = paymentData.expiryDate.split('/');
-        const expiryDate = new Date('20' + year, month - 1); // -1 because months are 0-indexed
+        const expiryDate = new Date('20' + year, month - 1);
         if (expiryDate < new Date()) {
           newErrors.expiryDate = 'Card has expired';
         }
@@ -116,10 +116,8 @@ function Payment({ checkoutData, cartItems, onBack, onComplete }) {
     
     // Simulate payment processing with a timeout
     try {
-      // In a real app, this would be an API call to a payment processor
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      // Generate a random order number
       const orderNumber = `ORD-${Math.floor(100000 + Math.random() * 900000)}`;
       
       const paymentInfo = {
@@ -128,7 +126,6 @@ function Payment({ checkoutData, cartItems, onBack, onComplete }) {
         timestamp: new Date().toISOString()
       };
       
-      // Pass the payment and order details to the parent component
       onComplete({
         orderNumber,
         paymentInfo,

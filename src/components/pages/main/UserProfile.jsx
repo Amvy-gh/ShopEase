@@ -27,10 +27,7 @@ function UserProfile({ onClose, userData, onLogout }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Here you would typically send the updated profile data to your backend
     setIsEditing(false);
-    // Notify parent component about updated user data
-    // onUpdateUserData(formData);
     alert('Profile updated successfully!');
   };
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import ProductCard from './ProductCard';
+import ProductCard from '../pages/main/ProductCard';
 
 function ProductList({ products, onAddToCart }) {
   return (

@@ -1,20 +1,28 @@
 import React, { useState } from "react";
-import Header from "./components/pages/Header";
-import Footer from "./components/pages/Footer";
-import ProductList from "./components/ProductList";
-import ShoppingCart from "./components/ShoppingCart";
-import Checkout from "./components/Checkout";
-import Payment from "./components/Payment";
-import OrderComplete from "./components/OrderComplete";
-import SpecialSaleBanner from "./components/SpecialSaleBanner";
-import CategoryFilter from "./components/CategoryFilter";
-import UserProfile from "./components/UserProfile";
+import Header from "./components/pages/main/Header";
+import Footer from "./components/pages/main/Footer";
+import ProductList from "./components/utils/ProductList";
+import ShoppingCart from "./components/pages/payment/ShoppingCart";
+import Checkout from "./components/pages/payment/Checkout";
+import Payment from "./components/pages/payment/Payment";
+import OrderComplete from "./components/pages/payment/OrderComplete";
+import SpecialSaleBanner from "./components/pages/main/SpecialSaleBanner";
+import CategoryFilter from "./components/utils/CategoryFilter";
+import UserProfile from "./components/pages/main/UserProfile";
 import SampleProducts from "./data/SampleProducts";
 import UseUserData from "./data/UserData";
+import UseCart from "./hooks/UseCart";
 
 function App() {
   const [products] = useState(SampleProducts);
-  const [cart, setCart] = useState([]);
+  const {
+    cart,
+    addToCart,
+    removeFromCart,
+    updateQuantity,
+    calculateSubtotal,
+    cartItemCount
+  } = UseCart();
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState("All");
@@ -35,58 +43,16 @@ function App() {
     return matchesCategory && matchesSearch;
   });
 
-  const addToCart = (product) => {
-    const existingItem = cart.find(item => item.id === product.id);
-    if (existingItem) {
-      setCart(cart.map(item => 
-        item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
-      ));
-    } else {
-      setCart([...cart, { ...product, quantity: 1 }]);
-    }
-    setIsCartOpen(true);
-    setTimeout(() => setIsCartOpen(false), 3000);
-  };
-
-  const removeFromCart = (productId) => {
-    setCart(cart.filter(item => item.id !== productId));
-  };
-
-  const updateQuantity = (productId, newQuantity) => {
-    if (newQuantity <= 0) {
-      removeFromCart(productId);
-      return;
-    }
-    setCart(cart.map(item => 
-      item.id === productId ? { ...item, quantity: newQuantity } : item
-    ));
-  };
-
-  const calculateSubtotal = () => {
-    return cart.reduce((total, item) => {
-      const itemPrice = item.discount ? 
-        item.price - (item.price * item.discount / 100) : 
-        item.price;
-      return total + (itemPrice * item.quantity);
-    }, 0);
-  };
-
-  const cartItemCount = cart.reduce((total, item) => total + item.quantity, 0);
-
   const toggleCart = () => {
     setIsCartOpen(!isCartOpen);
-    // Close profile if opening cart
     if (!isCartOpen) setIsProfileOpen(false);
   };
 
-  // Toggle profile panel
   const toggleProfile = () => {
     setIsProfileOpen(!isProfileOpen);
-    // Close cart if opening profile
     if (!isProfileOpen) setIsCartOpen(false);
   };
 
-  // Handle user logout
   const handleLogout = () => {
     setUserData({
       name: "Guest User",
@@ -97,10 +63,8 @@ function App() {
       orders: []
     });
     setIsProfileOpen(false);
-    // In a real app, you would also clear any auth tokens/cookies here
   };
 
-  // Handle user data updates
   const updateUserData = (newData) => {
     setUserData({
       ...userData,
@@ -115,7 +79,6 @@ function App() {
 
   const handleBackToShop = () => {
     setAppView("shop");
-    // Reset search when going back to shop
     setSearchQuery("");
   };
 
@@ -130,7 +93,6 @@ function App() {
   };
 
   const handlePaymentComplete = (orderInfo) => {
-    // Add the new order to user's order history if logged in
     if (userData.isLoggedIn) {
       const newOrder = {
         id: `ORD-${Math.floor(1000 + Math.random() * 9000)}`,
@@ -150,7 +112,6 @@ function App() {
     setCart([]);
   };
 
-  // Handle search input changes
   const handleSearchChange = (query) => {
     setSearchQuery(query);
   };
