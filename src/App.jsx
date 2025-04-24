@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Header from "./components/pages/main/Header";
 import Footer from "./components/pages/main/Footer";
 import ProductList from "./components/utils/ProductList";
@@ -10,21 +10,17 @@ import SpecialSaleBanner from "./components/pages/main/SpecialSaleBanner";
 import CategoryFilter from "./components/utils/CategoryFilter";
 import UserProfile from "./components/pages/main/UserProfile";
 import SampleProducts from "./data/SampleProducts";
+
+// Custom hooks
 import UseCart from "./hooks/UseCart";
 import UseProfile from "./hooks/UseProfile";
+import UseProducts from "./hooks/UseProducts";
+import UseAppView from "./hooks/UseAppView";
+import UseCartModal from "./hooks/UseCartModal";
+import UseCheckout from "./hooks/UseCheckOut";
 
 function App() {
-  const [products] = useState(SampleProducts);
-  const {
-    cart,
-    addToCart,
-    removeFromCart,
-    updateQuantity,
-    calculateSubtotal,
-    cartItemCount,
-    setCart
-  } = UseCart();
-  
+  // Profile management
   const {
     userData,
     isProfileOpen,
@@ -35,62 +31,83 @@ function App() {
     addOrderToHistory
   } = UseProfile();
   
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const [activeCategory, setActiveCategory] = useState("All");
-  const [appView, setAppView] = useState("shop");
-  const [checkoutData, setCheckoutData] = useState(null);
-  const [orderData, setOrderData] = useState(null);
-  const [searchQuery, setSearchQuery] = useState("");
-  const categories = ["All", ...new Set(products.map(product => product.category))];
+  // Cart management
+  const {
+    cart,
+    addToCart,
+    removeFromCart,
+    updateQuantity,
+    calculateSubtotal,
+    cartItemCount,
+    setCart
+  } = UseCart();
+  
+  // App view management
+  const {
+    checkoutData,
+    orderData,
+    goToShop,
+    goToCheckout,
+    goToPayment,
+    goToOrderComplete,
+    isShopView,
+    isCheckoutView,
+    isPaymentView,
+    isOrderCompleteView
+  } = UseAppView();
+  
+  // Products and filtering
+  const {
+    filteredProducts,
+    categories,
+    activeCategory,
+    setActiveCategory,
+    searchQuery,
+    handleSearchChange,
+    clearSearch,
+    getDisplayTitle,
+    productCount
+  } = UseProducts(SampleProducts);
+  
+  // Cart modal management
+  const {
+    isCartOpen,
+    toggleCart,
+    closeCart
+  } = UseCartModal(closeProfile);
+  
+  // Checkout flow management - tanpa circular dependency
+  const {
+    handleProceedToPayment,
+    handlePaymentComplete
+  } = UseCheckout();
 
-  // Filter products based on both category and search query
-  const filteredProducts = products.filter(product => {
-    const matchesCategory = activeCategory === "All" || product.category === activeCategory;
-    const matchesSearch = searchQuery === "" || 
-      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.description.toLowerCase().includes(searchQuery.toLowerCase());
-    
-    return matchesCategory && matchesSearch;
-  });
-
-  const toggleCart = () => {
-    setIsCartOpen(!isCartOpen);
-    if (!isCartOpen) closeProfile();
-  };
-
+  // Handler untuk checkout dari keranjang
   const handleCheckoutClick = () => {
-    setIsCartOpen(false);
-    setAppView("checkout");
+    closeCart();
+    goToCheckout();
   };
 
+  // Handler untuk kembali ke toko
   const handleBackToShop = () => {
-    setAppView("shop");
-    setSearchQuery("");
+    goToShop();
+    clearSearch();
   };
 
-  const handleProceedToPayment = (checkoutInfo) => {
-    setCheckoutData({
-      ...checkoutInfo,
-      subtotal: calculateSubtotal(),
-      discount: 0,
-      tax: (calculateSubtotal() * 0.1).toFixed(2)
-    });
-    setAppView("payment");
+  // Modified handler untuk proses ke pembayaran
+  const handleProceedToPaymentWithNav = (checkoutInfo, subtotal) => {
+    handleProceedToPayment(checkoutInfo, subtotal, goToPayment);
   };
 
-  const handlePaymentComplete = (orderInfo) => {
-    const taxAmount = parseFloat((calculateSubtotal() * 0.1).toFixed(2));
-    
-    // Add order to history using the profile hook method
-    addOrderToHistory(calculateSubtotal(), taxAmount);
-    
-    setOrderData(orderInfo);
-    setAppView("orderComplete");
-    setCart([]);
-  };
-
-  const handleSearchChange = (query) => {
-    setSearchQuery(query);
+  // Modified handler untuk menyelesaikan pembayaran
+  const handlePaymentCompleteWithNav = (orderInfo, subtotal) => {
+    handlePaymentComplete(
+      orderInfo, 
+      subtotal, 
+      goToOrderComplete, 
+      () => setCart([]), 
+      addOrderToHistory
+    );
   };
 
   return (
@@ -98,7 +115,7 @@ function App() {
       <Header 
         cartCount={cartItemCount} 
         onCartClick={toggleCart}
-        onProfileClick={() => toggleProfile(() => setIsCartOpen(false))} 
+        onProfileClick={() => toggleProfile(closeCart)} 
         searchQuery={searchQuery}
         onSearchChange={handleSearchChange}
         isLoggedIn={userData.isLoggedIn}
@@ -106,28 +123,32 @@ function App() {
       />
 
       <main className="flex-grow container mx-auto px-4 py-8">
-        {appView === "shop" && (
+        {isShopView() && (
           <>
             <SpecialSaleBanner />
             
-            <CategoryFilter categories={categories} activeCategory={activeCategory} setActiveCategory={setActiveCategory} />
+            <CategoryFilter 
+              categories={categories} 
+              activeCategory={activeCategory} 
+              setActiveCategory={setActiveCategory} 
+            />
+            
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-bold text-gray-800">
-                {activeCategory === "All" ? 
-                  (searchQuery ? `Search: "${searchQuery}"` : "Featured Products") : 
-                  activeCategory}
+                {getDisplayTitle()}
               </h2>
               <div className="text-sm text-gray-500">
-                Showing {filteredProducts.length} products
+                Showing {productCount} products
               </div>
             </div>
-            {filteredProducts.length > 0 ? (
+            
+            {productCount > 0 ? (
               <ProductList products={filteredProducts} onAddToCart={addToCart} />
             ) : (
               <div className="text-center py-12">
                 <p className="text-gray-500 text-lg">No products found matching your search.</p>
                 <button 
-                  onClick={() => handleSearchChange("")}
+                  onClick={clearSearch}
                   className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
                 >
                   Clear Search
@@ -137,33 +158,33 @@ function App() {
           </>
         )}
 
-        {appView === "checkout" && (
+        {isCheckoutView() && (
           <Checkout 
             cartItems={cart} 
             subtotal={calculateSubtotal()} 
             onBack={handleBackToShop}
-            onProceed={handleProceedToPayment}
-            userData={userData} // Pass user data for auto-filling
+            onProceed={(checkoutInfo) => handleProceedToPaymentWithNav(checkoutInfo, calculateSubtotal())}
+            userData={userData}
           />
         )}
 
-        {appView === "payment" && (
+        {isPaymentView() && (
           <Payment 
             checkoutData={checkoutData}
             cartItems={cart}
-            onBack={() => setAppView("checkout")}
-            onComplete={handlePaymentComplete}
+            onBack={goToCheckout}
+            onComplete={(orderInfo) => handlePaymentCompleteWithNav(orderInfo, calculateSubtotal())}
           />
         )}
 
-        {appView === "orderComplete" && (
+        {isOrderCompleteView() && (
           <OrderComplete orderData={orderData} onBack={handleBackToShop} />
         )}
 
-        {appView === "shop" && (
+        {isShopView() && (
           <ShoppingCart 
             isOpen={isCartOpen}
-            onClose={() => setIsCartOpen(false)}
+            onClose={closeCart}
             cartItems={cart}
             onUpdateQuantity={updateQuantity}
             onRemoveItem={removeFromCart}
@@ -182,7 +203,7 @@ function App() {
           />
         )}
 
-        {appView === "shop" && (
+        {isShopView() && (
           <button
             className="fixed bottom-4 right-4 bg-blue-600 text-white rounded-full p-3 shadow-lg md:hidden"
             onClick={toggleCart}
