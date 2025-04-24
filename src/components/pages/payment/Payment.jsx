@@ -514,7 +514,7 @@ function Payment({ checkoutData, cartItems, onBack, onComplete }) {
               </div>
               <div className="flex justify-between mb-2">
                 <span className="text-sm text-gray-600">Shipping</span>
-                <span className="text-sm font-medium">${checkoutData.shipping}</span>
+                <span className="text-sm font-medium">${(checkoutData.shipping || 0).toFixed(2)}</span>
               </div>
               {checkoutData.discount > 0 && (
                 <div className="flex justify-between mb-2">
@@ -530,11 +530,9 @@ function Payment({ checkoutData, cartItems, onBack, onComplete }) {
               )}
             </div>
             
-            <div className="border-t border-gray-200 pt-3 mb-6">
-              <div className="flex justify-between">
-                <span className="font-semibold">Total</span>
-                <span className="font-semibold">${checkoutData.totalCost}</span>
-              </div>
+            <div className="flex justify-between">
+              <span className="font-semibold">Total</span>
+              <span className="font-semibold">${checkoutData.totalCost.toFixed(2)}</span>
             </div>
             
             <button
