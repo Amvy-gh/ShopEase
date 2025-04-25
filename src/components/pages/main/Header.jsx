@@ -33,8 +33,8 @@ function Header({ cartCount, onCartClick, onProfileClick, searchQuery, onSearchC
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center space-x-2 cursor-pointer">
-            <svg className="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M9 6a3 3 0 100-6 3 3 0 000 6zM17 6a3 3 0 100-6 3 3 0 000 6zM12.9 8.7l-1.5 4.8h2.2c.3 0 .5.2.4.5l-.7 3.5c-.1.3-.4.5-.7.5H7.5c-.3 0-.5-.2-.4-.5l1.8-8.8c.1-.3.4-.5.7-.5h2.9c.3 0 .5.2.4.5z" />
+            <svg className="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4H6zm3 2h6l1.5 2h-9L9 4zm3 5a3 3 0 110 6 3 3 0 010-6z" />
             </svg>
             <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text">ShopEase</span>
           </div>
