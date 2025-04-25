@@ -363,16 +363,16 @@ function Payment({ checkoutData, cartItems, onBack, onComplete }) {
               <div className="mb-4">
                 <div className="flex justify-center space-x-4 mb-6">
                   <div className="border rounded p-3 w-20 h-20 flex items-center justify-center">
-                    <img src="https://img.icons8.com/color/48/000000/bca-bank.png" alt="BCA" className="h-10" />
+                    <img src="https://dashboard.laznasdewandakwah.or.id/storage/thumbnails/2022/3/petunjuk-pembayaran-via-bca-virtual-account_jpg" alt="BCA" className="h-10" />
                   </div>
                   <div className="border rounded p-3 w-20 h-20 flex items-center justify-center">
-                    <img src="https://img.icons8.com/color/48/000000/mandiri.png" alt="Mandiri" className="h-10" />
+                    <img src="https://www.bankmandiri.co.id/documents/20143/43069492/use+Case+3.png/4a27b750-164b-37ed-9829-63dbac0cbd7c?t=1611053514457" alt="Mandiri" className="h-10" />
                   </div>
                   <div className="border rounded p-3 w-20 h-20 flex items-center justify-center">
-                    <img src="https://img.icons8.com/color/48/000000/bni.png" alt="BNI" className="h-10" />
+                    <img src="https://logowik.com/content/uploads/images/bni-bank-negara-indonesia8078.logowik.com.webp" alt="BNI" className="h-10" />
                   </div>
                   <div className="border rounded p-3 w-20 h-20 flex items-center justify-center">
-                    <img src="https://img.icons8.com/color/48/000000/bri.png" alt="BRI" className="h-10" />
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMeqbx8--46kKmCET5yZnDT9BFqSByqVCYQw&s" alt="BRI" className="h-10" />
                   </div>
                 </div>
                 
