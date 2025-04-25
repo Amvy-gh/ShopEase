@@ -36,9 +36,13 @@ function UserProfile({ onClose, userData, onLogout }) {
       {!isEditing ? (
         <>
           <div className="flex items-center space-x-4">
-            <div className="bg-blue-500 text-white rounded-full w-16 h-16 flex items-center justify-center text-2xl font-bold">
-              {formData.name.charAt(0)}
-            </div>
+          <div className="w-16 h-16 rounded-full overflow-hidden bg-blue-500">
+            <img 
+              src="https://avatars.githubusercontent.com/u/193418353?s=400&u=d665218d48d08f5d6463b7ff6a200fe8d3f9617e&v=4" 
+              alt="Khao Manee"
+              className="w-full h-full object-cover"
+            />
+          </div>
             <div>
               <h3 className="text-xl font-semibold">{formData.name}</h3>
               <p className="text-gray-500">{formData.email}</p>

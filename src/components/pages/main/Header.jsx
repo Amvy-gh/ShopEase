@@ -85,8 +85,12 @@ function Header({ cartCount, onCartClick, onProfileClick, searchQuery, onSearchC
               >
                 {isLoggedIn ? (
                   <div className="relative">
-                    <div className="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center">
-                      {userName?.charAt(0).toUpperCase() || 'G'}
+                    <div className="w-11 h-11 rounded-full overflow-hidden bg-blue-500">
+                      <img 
+                        src="https://avatars.githubusercontent.com/u/193418353?s=400&u=d665218d48d08f5d6463b7ff6a200fe8d3f9617e&v=4" 
+                        alt="Khao Manee"
+                        className="w-full h-full object-cover"
+                      />
                     </div>
                     <span className="hidden group-hover:block absolute -bottom-6 -left-8 w-24 text-xs bg-gray-800 text-white py-1 px-2 rounded text-center">
                       My Profile
